@@ -19,6 +19,6 @@ jobs:
           node-version: "18"
       - run: pnpm install
       - run: pnpm test
-      - env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: pnpm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
