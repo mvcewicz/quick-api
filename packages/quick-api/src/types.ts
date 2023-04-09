@@ -56,3 +56,5 @@ export type Endpoint<
   middlewares?: TMiddleware;
   output?: TOutputSchema;
 };
+
+// test
