@@ -1,20 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ESNext",
-    "sourceMap": true,
-    "noEmit": true,
-    "strict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true,
+    "target": "es6",
+    "module": "esnext",
     "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": false,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src"],
 }
