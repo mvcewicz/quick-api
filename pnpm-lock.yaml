@@ -28,14 +28,12 @@ importers:
 
   packages/quick-api:
     specifiers:
-      '@changesets/cli': ^2.26.1
       next: ^13.2.4
       tsup: ^6.7.0
       typescript: ^5.0.3
       vitest: ^0.29.8
       zod: ^3.21.4
     devDependencies:
-      '@changesets/cli': 2.26.1
       next: 13.2.4
       tsup: 6.7.0_typescript@5.0.3
       typescript: 5.0.3
