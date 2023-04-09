@@ -13,4 +13,6 @@ jobs:
         with:
           node-version: "18"
       - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm build
       - run: pnpm test
