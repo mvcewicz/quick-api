@@ -20,6 +20,6 @@ jobs:
       - run: pnpm install
       - run: pnpm test
       - run: pnpm build
-      - run: pnpm publish -r --access=public
+      - run: pnpm changeset version && pnpm publish -r --access=public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
