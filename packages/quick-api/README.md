@@ -97,7 +97,7 @@ export const GET = qApi.endpoint({
 Simple middleware that will add `prisma` to the context
 
 ```ts
-import { QuickApi } from "@mvcwcz/quick-api";
+import { QuickApi, middleware } from "@mvcwcz/quick-api";
 
 export const qApi = QuickApi();
 
@@ -109,28 +109,15 @@ const sessionMiddleware = middleware((req) => {
 });
 
 export const GET = qApi.endpoint({
-  input: z.object({
-    query: z.object({
-      id: z.string(),
-    }),
-  }),
-  output: z.object({
-    id: z.string(),
-    email: z.string(),
-  }),
   middlewares: [sessionMiddleware],
   callback: async ({ input, ctx }) => {
-    const item = await ctx.prisma.findOne({
-      where: {
-        id: input.id,
-      },
-    });
+    const session = ctx.session;
 
-    if (!item) {
-      throw new Error(`Item with ${input.id} not found`);
+    if (!session) {
+      throw new Error("Session not found");
     }
 
-    return item;
+    return new Response("OK");
   },
 });
 ```
