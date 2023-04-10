@@ -20,7 +20,7 @@ export class EndpointOutputSchemaError extends Error {
 
 export class EndpointCallbackError extends Error {
   public context: string;
-  constructor(message: string, context: any) {
+  constructor(message: string, context: string) {
     super(message);
     this.name = "EndpointCallbackError";
     this.context = context;

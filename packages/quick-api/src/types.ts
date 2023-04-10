@@ -39,6 +39,14 @@ export type EndpointControllerConfig = {
   onCallbackError: (error: EndpointCallbackError) => Response;
 };
 
+/**
+ * Endpoint configuration
+ * @param TController - Endpoint controller configuration
+ * @param TMiddleware - Endpoint middlewares
+ * @param TInputSchema - Endpoint input schema
+ * @param TOutputSchema - Endpoint output schema
+ * @returns Endpoint
+ */
 export type Endpoint<
   TController extends EndpointControllerConfig,
   TMiddleware extends Middleware[] | [] = [],

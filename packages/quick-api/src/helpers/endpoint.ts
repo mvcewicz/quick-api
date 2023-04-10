@@ -15,6 +15,13 @@ import {
 import { isNativeResponse, tryCatch } from "./common";
 import { getMiddlewareContext } from "./middleware";
 
+const getRequestBody = async (req: NextRequest) => {
+  const [parsedRequestBody, parsedRequestBodyError] = await tryCatch(async () =>
+    req.json()
+  );
+  return parsedRequestBodyError ? req.body : parsedRequestBody;
+};
+
 export function endpoint<
   TController extends EndpointControllerConfig,
   TInputSchema extends z.ZodTypeAny = z.ZodNever,
@@ -43,7 +50,11 @@ export function endpoint<
     const query = extractQueryFromUrl(req.url);
     const params = ctx.params;
 
-    const requestInput = input ? { ...req, query, params } : undefined;
+    const requestBody = await getRequestBody(req);
+
+    const requestInput = input
+      ? { ...req, query, params, body: requestBody }
+      : undefined;
 
     const [inputParsed, inputParsedError] = zodSafeParseInline(
       requestInput,
@@ -73,7 +84,7 @@ export function endpoint<
           callbackError instanceof Error
             ? callbackError.message
             : "Unhandled callback error",
-          callbackError
+          callbackError?.toString()
         )
       );
     }

@@ -1,12 +1,14 @@
 import { QuickApi } from "../lib";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
+import { NextRequest } from "next/server";
+import { EndpointContext } from "../types";
 
 const q = QuickApi();
 
 const testEndpointContext = [
-  { url: "http://localhost:8080" } as any,
-  {} as any,
+  new NextRequest("http://localhost:8080"),
+  {} as EndpointContext,
 ] as const;
 
 describe("QuickApi", () => {
@@ -46,7 +48,7 @@ describe("QuickApi", () => {
 
     const endpointResponse = await endpoint(...testEndpointContext);
 
-    expect(JSON.parse(await endpointResponse.text())).toEqual([
+    expect(await endpointResponse.json()).toEqual([
       {
         code: "invalid_type",
         expected: "string",
@@ -69,7 +71,7 @@ describe("QuickApi", () => {
 
     const endpointResponse = await endpoint(...testEndpointContext);
 
-    expect(JSON.parse(await endpointResponse.text())).toEqual([
+    expect(await endpointResponse.json()).toEqual([
       {
         code: "invalid_type",
         expected: "string",
@@ -78,5 +80,28 @@ describe("QuickApi", () => {
         message: "Required",
       },
     ]);
+  });
+
+  it("should parse request body", async () => {
+    const endpoint = q.endpoint({
+      input: z.object({
+        body: z.object({
+          id: z.string(),
+        }),
+      }),
+      callback: ({ input }) => new Response(input.body.id),
+    });
+
+    const endpointResponse = await endpoint(
+      new NextRequest("http://localhost:8080", {
+        method: "POST",
+        body: JSON.stringify({
+          id: "test",
+        }),
+      }),
+      {}
+    );
+
+    expect(await endpointResponse.text()).toEqual("test");
   });
 });
